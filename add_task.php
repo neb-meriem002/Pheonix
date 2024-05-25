@@ -3,7 +3,7 @@
         $errors = "";
 
         // connect to database
-        $db = mysqli_connect("localhost", "root", "", "todo");
+        $db = mysqli_connect("localhost", "root", "", "todo_list");
 
         // insert a quote if submit button is clicked
         if (isset($_POST['submit'])) {
