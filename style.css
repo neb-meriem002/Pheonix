@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    height: 100%;
+}
+body{
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* font-family: -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Noto, Oxygen-Sans, Ubuntu, Cantrell, Helvetica Neue, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol; */
+    height: 100%;
+    height: calc(100vh - 50px); /* Subtract the bottom margin from 100% viewport height */
+            margin-bottom: 50px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    display: block;
+    color:black;
+}
+header{
+    margin: 10px 8px 10px 8px;
+    border-radius: 5px;
+    background-color: rgb(237, 151, 151);
+    color:white;
+    display: flex;
+    flex-direction: row;
+}
+header p{
+    padding-top:20px;
+    font-size: 25px;
+}
+header img{
+    margin-top: 5px;
+    width: 64px;
+    height: 100%;
+    margin-right: 20px;
+    margin-left: 30px;
+    
+}
+.barre-cote{
+    background-color: rgb(255, 247, 233);
+    border: 0;
+    margin-left: 8px;
+    width:300px;
+    font-family: inherit;
+    list-style: none;
+    margin-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    vertical-align: initial;
+    box-sizing: border-box;
+    color: rgb(50, 50, 50);
+    display: flex;
+    border-radius: 5px;
+    flex-direction: column;
+}
+.contenu{
+
+    background-color: rgb(255, 247, 233);
+    border: 0;
+    margin-left: 5px;
+    width: 100%;
+    font-family: inherit;
+    list-style: none;
+    margin-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    vertical-align: initial;
+    box-sizing: border-box;
+    color: rgb(50, 50, 50);
+    display: flex;
+    border-radius: 5px;
+    flex-direction: column;
+}
+.main{
+    background-color: var(--product-library-background-base-secondary);
+    box-sizing: border-box;
+    display: flex;
+    height: calc(100% - 55px); 
+    overflow: hidden;
+    width: 100%;
+}
+
+button{
+    border: none;
+    background-color: rgb(255, 247, 233);
+}
+.org-bouton{
+    display: flex;
+    flex-direction: row;
+}
+
+.org-bouton img{
+    width: 50px;
+    height: 100%;
+}
