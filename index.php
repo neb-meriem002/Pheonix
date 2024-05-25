@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page de Connexion et Inscription</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Connexion et Inscription</title>
+    <link rel="stylesheet" href="style-php.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+    <style>/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+</style>
 </head>
 <body>
     <div class="container">

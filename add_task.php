@@ -201,23 +201,98 @@ if (isset($_POST['done_task'])) {
     function add_button()
     {
         ?>
-        <button id="showTaskForm">Add Task</button>
-        <div class="task-block">
+        <button class="button-add" id="openDialogBtn">Ajouter tache</button>
+          
+    
+    <div id="dialog" class="dialog-overlay">
+        <div class="dialog-box">
+            <span class="close-btn" id="closeDialogBtn">&times;</span>
+            <h2>Dialog Title</h2>
+            <p>This is a simple dialog box.</p>
             <form method="post" action="add_task.php" class="input_form">
-            <?php if (isset($errors)) { ?>
-                <p><?php echo $errors; ?></p>
-            <?php } ?>
-            <input type="text" name="task" class="task_input">
-            <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
-            </form>
-            </div>
-                    
+                <?php if (isset($errors)) { ?>
+                    <p><?php echo $errors; ?></p>
+                <?php } ?>
+                <input type="text" name="task" class="task_input">
+                <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
+            
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const openDialogBtn = document.getElementById("openDialogBtn");
+    const closeDialogBtn = document.getElementById("closeDialogBtn");
+    const dialog = document.getElementById("dialog");
 
-            <script>
-            document.getElementById('showTaskForm').addEventListener('click', function() {
-            document.querySelector('.task-block').style.display = 'block';
-            });
-            </script>
+    // Function to open the dialog
+    openDialogBtn.addEventListener("click", function() {
+        dialog.classList.add("show");
+    });
+
+    // Function to close the dialog
+    closeDialogBtn.addEventListener("click", function() {
+        dialog.classList.remove("show");
+    });
+
+    // Close the dialog when clicking outside of the dialog box
+    window.addEventListener("click", function(event) {
+        if (event.target === dialog) {
+            dialog.classList.remove("show");
+        }
+    });
+});
+</script>
+    <style>
+        /* styles.css */
+
+/* Overlay for the dialog */
+.dialog-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Dialog box styling */
+.dialog-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+/* Close button styling */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.button add{
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Show the dialog when the .show class is added */
+.dialog-overlay.show {
+    display: flex;
+}
+
+</style>
+
     <?php
     }
     ?>
