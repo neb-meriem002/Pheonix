@@ -136,3 +136,7 @@ button{
 .project p{
     margin-right: 40px;
 }
+
+.task-block {
+    display: none;
+}
