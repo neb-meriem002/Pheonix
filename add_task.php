@@ -1,46 +1,77 @@
-<?php 
-    // initialize errors variable
-        $errors = "";
+<?php
+session_start();
 
-        // connect to database
-        $db = mysqli_connect("localhost", "root", "", "todo_list");
+// Vérifie si l'utilisateur est connecté
+if (!isset($_SESSION['username'])) {
+    header('Location: index.php');
+    exit;
+}
 
-        // insert a quote if submit button is clicked
-        if (isset($_POST['submit'])) {
-                if (empty($_POST['task'])) {
-                        $errors = "You must fill in the task";
-                }else{
-                        $task = $_POST['task'];
-                        $sql = "INSERT INTO tasks (task) VALUES ('$task')";
-                        mysqli_query($db, $sql);
-                        header('location: index.php');
-                }
-        }     
-        // delete task
-        if (isset($_POST['del_task'])) {
-            $id = $_POST['task_id_delete'];
-        mysqli_query($db, "DELETE FROM tasks WHERE id_task=".$id.";");
-        header('location: index.php');
-        }
+// Connexion à la base de données (à adapter selon votre configuration)
+$db = new mysqli('localhost', 'root', '', 'todo_list');
 
-        // done task
-        if (isset($_POST['done_task'])) {
-            $id = $_POST['task_id_done'];
-            // Retrieve the current state of the task
-            $current_state_query = mysqli_query($db, "SELECT etat FROM tasks WHERE id_task = $id");
-            $current_state_row = mysqli_fetch_assoc($current_state_query);
-            $current_state = $current_state_row['etat'];
-        
-            // Toggle the state of the task
-            $new_state = ($current_state == 'Done') ? 'Not_Done' : 'Done';
-        
-            // Update the task with the new state
-            mysqli_query($db, "UPDATE tasks SET etat = '$new_state' WHERE id_task = $id");
-            header('location: index.php');
-            
-        }
+// Vérifie la connexion
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
+}
 
-?>  
+$username = $_SESSION['username'];
+
+// Obtient l'ID de l'utilisateur
+$stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$user_id = $user['id'];
+
+$stmt->close();
+
+// initialize errors variable
+$errors = "";
+
+// insert a quote if submit button is clicked
+if (isset($_POST['submit'])) {
+    if (empty($_POST['task'])) {
+        $errors = "You must fill in the task";
+    } else {
+        $task = $_POST['task'];
+        $category_id = $_POST['category_id']; // Assuming you have a category_id in your form
+        // Prepare and bind
+        $stmt = $db->prepare("INSERT INTO tasks (task, category_id, user_id) VALUES (?, ?, ?)");
+        $stmt->bind_param("sii", $task, $category_id, $user_id);
+        // Execute the statement
+        $stmt->execute();
+        $stmt->close();
+        header('location: add_task.php');
+    }
+}
+
+// delete task
+if (isset($_POST['del_task'])) {
+    $id = $_POST['task_id_delete'];
+    // Prepare and bind
+    $stmt = $db->prepare("DELETE FROM tasks WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $id, $user_id);
+    // Execute the statement
+    $stmt->execute();
+    $stmt->close();
+    header('location: add_task.php');
+}
+
+// done task
+if (isset($_POST['done_task'])) {
+    $id = $_POST['task_id_done'];
+    // Prepare and bind
+    $stmt = $db->prepare("UPDATE tasks SET etat = IF(etat='Done', 'Not_Done', 'Done') WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $id, $user_id);
+    // Execute the statement
+    $stmt->execute();
+    $stmt->close();
+    header('location: add_task.php');
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -66,7 +97,7 @@
             <div class="barre-cote">
                 <h2>Menu</h2>
                 <div class="org-bouton">
-                    <a href="index.html">
+                    <a href="add_task.html">
                         <img src="add.png">
                         <p>Ajouter une tache</p>
                     </a>
@@ -136,10 +167,10 @@
                             <td><?php echo $i; ?></td>
                             <td style="<?php echo $task_style; ?>"><?php echo $row['task']; ?></td>
                             <td>
-                                <form method="POST" action="index.php">
-                                    <input type="hidden" name="task_id_delete" value="<?php echo $row['id_task']; ?>">
+                                <form method="POST" action="add_task.php">
+                                    <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
                                     <button type="submit" name="del_task">x</button>
-                                    <input type="hidden" name="task_id_done" value="<?php echo $row['id_task']; ?>">
+                                    <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
                                     <button type="submit" name="done_task">D</button>
                                 </form>
                             </td>
@@ -172,7 +203,7 @@
         ?>
         <button id="showTaskForm">Add Task</button>
         <div class="task-block">
-            <form method="post" action="index.php" class="input_form">
+            <form method="post" action="add_task.php" class="input_form">
             <?php if (isset($errors)) { ?>
                 <p><?php echo $errors; ?></p>
             <?php } ?>

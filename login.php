@@ -24,7 +24,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             // Démarre une session et redirige l'utilisateur vers une page sécurisée
             session_start();
             $_SESSION['username'] = $username;
-            header('Location: secure_page.php');
+            header('Location: add_task.php');
             exit;
         } else {
             // Mot de passe incorrect
