@@ -89,19 +89,33 @@ if (isset($_POST['done_task'])) {
     </head>
     <body>
         <header>
-            <img src="icon.png"/>
-            <p>To-Do list</p>
+            <div class="logo">
+                <img src="icon.png"/>
+                <p>To-Do list</p>
+            </div>
+            <div class="logo2">
+                <a href="index.php">Déconnecter</a>
+
+                <a href="#">Editer profil</a>
+            </div>
 
         </header>
         <div class="main">
             <div class="barre-cote">
-                <h2>Menu</h2>
-                <div class="org-bouton">
-                    <a href="add_task.html">
-                        <img src="add.png">
-                        <p>Ajouter une tâche</p>
-                    </a>
+
+                <?php
+                    $msg = "Bonjour ". $username . " !";
+                ?>
+                <div class="info">
+                    <h2><?php echo htmlspecialchars($msg); ?></h2>
+                    <h2>Menu</h2>
                 </div>
+                <button class="button-add" id="openDialogBtn2">
+                    <div class="org-bouton">
+                            <img src="add.png">
+                            <p>Ajouter une tâche</p>
+                    </div>
+                 </button>
                 <div class="org-bouton"> 
                     <a href="#">
                     <img src="search.png">  
@@ -142,47 +156,59 @@ if (isset($_POST['done_task'])) {
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
                     echo "The table is empty.";
+                    ?>
+                    <div class="button-container">
+                    <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
+                    </div>
+            <?php
                     add_button();
             }   else {
+                add_button();
         ?>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>N</th>
-                            <th>Tasks</th>
-                            <th style="width: 60px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $i = 1;
-                        while ($row = mysqli_fetch_assoc($tasks)) {
-                            // Check if the task is 'Done' or 'Not_Done'
-                            $etat = $row['etat'];
-                            $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
-                        ?>
-                                    
-                        <tr>
-                            <td><?php echo $i; ?></td>
-                            <td style="<?php echo $task_style; ?>"><?php echo $row['task']; ?></td>
-                            <td>
-                                <form method="POST" action="add_task.php">
-                                    <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="del_task">x</button>
-                                    <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="done_task">D</button>
-                                </form>
-                            </td>
+            <div class="liste-tasks">
+                <div class="liste">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>N</th>
+                                <th>Tasks</th>
+                                <th style="width: 60px;">Action</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             <?php
-                                $i++;
-                                }
-                                add_button();
-                            }
+                            $i = 1;
+                            while ($row = mysqli_fetch_assoc($tasks)) {
+                                // Check if the task is 'Done' or 'Not_Done'
+                                $etat = $row['etat'];
+                                $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
                             ?>
-                    </tbody>
-                </table>
+                                        
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td style="<?php echo $task_style; ?>"><?php echo $row['task']; ?></td>
+                                <td>
+                                    <form method="POST" action="add_task.php">
+                                        <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="del_task">x</button>
+                                        <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="done_task">D</button>
+                                    </form>
+                                </td>
+                                </tr>
+                                <?php
+                                    $i++;
+                                    }
+                                ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-container2">
+                    <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
+                    </div>
+                    <?php
+                    }
+                    ?>
             </div>
         <?php
             } else {
@@ -201,34 +227,37 @@ if (isset($_POST['done_task'])) {
     function add_button()
     {
         ?>
-        <div class="button-container">
-            
-            <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
-        </div>
+       
           
     
     <div id="dialog" class="dialog-overlay">
         <div class="dialog-box">
             <span class="close-btn" id="closeDialogBtn">&times;</span>
-            <h2>Dialog Title</h2>
-            <p>This is a simple dialog box.</p>
+            <h2>Tâche</h2>
+            <p><br></p>
             <form method="post" action="add_task.php" class="input_form">
                 <?php if (isset($errors)) { ?>
                     <p><?php echo $errors; ?></p>
                 <?php } ?>
-                <input type="text" name="task" class="task_input">
-                <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
-            
+                <div class="input-class">
+                    <input type="text" name="task" class="task_input">
+                    <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
+                </div>
         </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+    const openDialogBtn2 = document.getElementById("openDialogBtn2");
     const openDialogBtn = document.getElementById("openDialogBtn");
     const closeDialogBtn = document.getElementById("closeDialogBtn");
     const dialog = document.getElementById("dialog");
 
     // Function to open the dialog
     openDialogBtn.addEventListener("click", function() {
+        dialog.classList.add("show");
+    });
+
+    openDialogBtn2.addEventListener("click", function() {
         dialog.classList.add("show");
     });
 
@@ -245,12 +274,6 @@ if (isset($_POST['done_task'])) {
     });
 });
 </script>
-    <style>
-        /* styles.css */
-
-/* Overlay for the dialog */
-
-</style>
 
     <?php
     }
