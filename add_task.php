@@ -99,7 +99,7 @@ if (isset($_POST['done_task'])) {
                 <div class="org-bouton">
                     <a href="add_task.html">
                         <img src="add.png">
-                        <p>Ajouter une tache</p>
+                        <p>Ajouter une tâche</p>
                     </a>
                 </div>
                 <div class="org-bouton"> 
@@ -118,7 +118,7 @@ if (isset($_POST['done_task'])) {
                 <div class="org-bouton "> 
                     <a class="project" href="#">
                     <img src="project.png">  
-                    <p> Projet(s)</p>
+                    <p> Catégorie(s)</p>
                     <div><button type="button" class="prj"><img src="add-prj.png"></button></div>
                     <div><button type="button" class="prj"><img src="show-prj.png"></button></div>
                     </a>
@@ -201,7 +201,10 @@ if (isset($_POST['done_task'])) {
     function add_button()
     {
         ?>
-        <button class="button-add" id="openDialogBtn">Ajouter tache</button>
+        <div class="button-container">
+            
+            <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
+        </div>
           
     
     <div id="dialog" class="dialog-overlay">
@@ -246,50 +249,6 @@ if (isset($_POST['done_task'])) {
         /* styles.css */
 
 /* Overlay for the dialog */
-.dialog-overlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* Dialog box styling */
-.dialog-box {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-}
-
-/* Close button styling */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.button-add{
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* Show the dialog when the .show class is added */
-.dialog-overlay.show {
-    display: flex;
-}
 
 </style>
 
