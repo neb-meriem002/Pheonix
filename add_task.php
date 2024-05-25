@@ -280,7 +280,7 @@ if (isset($_POST['done_task'])) {
     cursor: pointer;
 }
 
-.button add{
+.button-add{
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
