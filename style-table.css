@@ -1,0 +1,58 @@
+.liste {
+    width: 80%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 3px 3px 5px #ed97977b;
+}
+
+thead th {
+    background-color: #f4f4f4;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+}
+tr{
+    background-color: #fff7e9;
+}
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Styling for action buttons */
+form button {
+    background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+form button[name="done_task"] {
+    background-color: #4CAF50; /* Green */
+}
+
+form button:hover {
+    opacity: 0.8;
+}
+
+/* Adding styles for completed tasks */
+tbody td[style*="text-decoration: line-through;"] {
+    color: #999;
+}

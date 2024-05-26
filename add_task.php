@@ -79,6 +79,7 @@ if (isset($_POST['done_task'])) {
         <meta charset="utf-8">
         <title>To Do list</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style-table.css">
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
         <style>
             body{
@@ -235,6 +236,7 @@ if (isset($_POST['done_task'])) {
                                 // Check if the task is 'Done' or 'Not_Done'
                                 $etat = $row['etat'];
                                 $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
+                                $image_src = ($etat == 'Done') ? 'done.png' : 'undone.png'; // Determine image based on task status
                             ?>
                                         
                             <tr>
@@ -243,9 +245,13 @@ if (isset($_POST['done_task'])) {
                                 <td>
                                     <form method="POST" action="add_task.php">
                                         <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="del_task">x</button>
+                                        <button type="submit" name="del_task">
+                                            <img src="delete.png" width="20">
+                                        </button>
                                         <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="done_task">D</button>
+                                        <button id="btn-tsk" type="submit" name="done_task">
+                                            <img src="<?php echo $image_src; ?>" width="20">
+                                        </button>
                                     </form>
                                 </td>
                                 </tr>
@@ -256,6 +262,7 @@ if (isset($_POST['done_task'])) {
                         </tbody>
                     </table>
                 </div>
+                
                 <div class="button-container2">
                     <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
                     </div>
