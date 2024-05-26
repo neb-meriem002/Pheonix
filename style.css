@@ -65,7 +65,7 @@ header{
     background-color: rgb(255, 247, 233);
     border: 0;
     margin-left: 8px;
-    width:260px;
+    width:100px;
     font-family: inherit;
     list-style: none;
     margin-right: 15px;
@@ -77,20 +77,54 @@ header{
     display: flex;
     border-radius: 5px;
     flex-direction: column;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+.barre-cote p{
+    transition: 0.3s;
+    opacity: 0; /* Initially hide links */
+}
+
+.barre-cote.open p {
+    opacity:1;
 }
 .barre-cote h2{
     font-size: 20px;
     margin-bottom: 20px;
 }
+.option{
+    display : none;
+}
 .info{
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.closebtn {
+    display: none;
+}
+
+.openbtn {
+    /*
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1;
+*/
+display: block;
+}
+
+
 .contenu{
 
     
     border: 0;
-    margin-left: 5px;
     width: 100%;
     list-style: none;
     margin-right: 10px;
@@ -120,11 +154,13 @@ button{
     width: 100%;
     display: flex;
     flex-direction: row;
+    
 }
 .org-bouton{
     display: flex;
     flex-direction: row;
-    width: 200px;
+    width: 50px;
+    gap:10px;
     align-items: center;
 }
 a{
