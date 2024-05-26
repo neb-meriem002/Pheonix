@@ -101,48 +101,101 @@ if (isset($_POST['done_task'])) {
 
         </header>
         <div class="main">
-            <div class="barre-cote">
-
+            
+            <div class="barre-cote" id="mySidenav">
+            <button id="open" class="openbtn" onclick="openNav()">Open Sidebar</button>
+            <button id="close" class="closebtn" onclick="closeNav()">Closing</button>
                 <?php
                     $msg = "Bonjour ". $username . " !";
                 ?>
                 <div class="info">
-                    <h2><?php echo htmlspecialchars($msg); ?></h2>
-                    <h2>Menu</h2>
+                
+                    <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
+                    <h2 >Menu</h2>
                 </div>
                 <button class="button-add" id="openDialogBtn2">
-                    <div class="org-bouton">
+                    <div id="hoverElement" class="org-bouton">
                             <img src="add.png">
                             <p>Ajouter une tâche</p>
                     </div>
                  </button>
-                <div class="org-bouton"> 
+                <div id="hoverElement" class="org-bouton"> 
                     <a href="#">
                     <img src="search.png">  
                     <p> Rechercher</p>
                 </a>
                 </div>
-                <div class="org-bouton"> 
+                <div id="hoverElement" class="org-bouton"> 
                     <a href="notes.html">
                         <img src="note.png"> 
-                        <p>Notes</p>
+                        <p id="option">Notes</p>
                     </a>
                 
                 </div>
-                <div class="org-bouton "> 
+                <div id="hoverElement" class="org-bouton"> 
                     <a class="project" href="#">
                     <img src="project.png">  
-                    <p> Catégorie(s)</p>
+                    <p id="option"> Catégorie(s)</p>
                     <div><button type="button" class="prj"><img src="add-prj.png"></button></div>
                     <div><button type="button" class="prj"><img src="show-prj.png"></button></div>
                     </a>
                 </div>
 
-
-
             </div>
+
             
-        <div class="contenu">
+            <script>
+                
+                    function openNav() {
+                    var sidenav = document.getElementById("mySidenav");
+                    var element = document.getElementById("option");
+                    sidenav.style.width = "310px";
+                    sidenav.classList.add("open");
+                    var header = document.getElementById("myHeader");
+                    if (header) {
+                        header.style.display = "block";
+                    }
+                    var header = document.getElementById("open");
+                    if (header) {
+                        header.style.display = "none";
+                    }
+                    var header = document.getElementById("close");
+                    if (header) {
+                        header.style.display = "block";
+                    }
+                    var targetElements = document.querySelectorAll('.org-bouton');
+
+                            targetElements.forEach(hover => {
+                            hover.style.width = "210px";
+                    });
+                }
+
+                function closeNav() {
+                    var sidenav = document.getElementById("mySidenav");
+                    var element = document.getElementById("option");
+                    sidenav.style.width = "100px";
+                    sidenav.classList.remove("open");
+                    document.querySelector(".main").style.marginLeft = "0";
+                    var header = document.getElementById("myHeader");
+                    if (header) {
+                        header.style.display = "none";
+                    }
+                    var header = document.getElementById("close");
+                    if (header) {
+                        header.style.display = "none";
+                    }
+                    var header = document.getElementById("open");
+                    if (header) {
+                        header.style.display = "block";
+                    } 
+                    var targetElements = document.querySelectorAll('.org-bouton');
+
+                            targetElements.forEach(hover => {
+                            hover.style.width = "50px";
+                    });
+                }
+            </script>
+        <div class="contenu" id="main">
             <div>
                 <h2>ToDo List Application PHP and MySQL database</h2>
             </div>
