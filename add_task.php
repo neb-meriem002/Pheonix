@@ -111,121 +111,115 @@ if (isset($_POST['edit_task'])) {
             <div class="logo2">
                 <a href="index.php">Déconnecter</a>
 
+                <a href="#">Editer profil</a>
             </div>
 
         </header>
+        
         <div class="main">
-            
-            <div class="barre-cote" id="mySidenav">
-            <button id="open" class="openbtn" onclick="openNav()"><img class="nav" src="menu.png"></button>
+    <div class="barre-cote" id="mySidenav">
+    <button id="open" class="openbtn" onclick="openNav()"><img class="nav" src="menu.png"></button>
             <button id="close" class="closebtn" onclick="closeNav()"><img class="nav" src="close.png"></button>
-                <?php
-                    $msg = "Bonjour ". $username . " !";
-                ?>
-                <div class="info">
-                
-                    <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
-                    <h2 >Menu</h2>
-                </div>
-                <button class="button-add" id="openDialogBtn2">
-                    <div id="hoverElement" class="org-bouton">
-                            <img src="add.png">
-                            <p>Ajouter une tâche</p>
-                    </div>
-                 </button>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a href="#">
-                    <img src="search.png">  
-                    <p> Rechercher</p>
-                </a>
-                </div>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a href="notes.php">
-                        <img src="note.png"> 
-                        <p id="option">Notes</p>
-                    </a>
-                
-                </div>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a class="project" href="#">
-                    <img src="project.png">  
-                    <p id="option"> Catégorie(s)</p>
-                    <div>
-                        <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
-                    </div>
-                    
-                    <div>
-                        <button type="button" class="prj"><img src="show-prj.png"></button>
-                    </div>
-                    </a>
+        <?php
+        $msg = "Bonjour ". $username . " !";
+        ?>
+        <div class="info">
+
+            <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
+            <h2 >Menu</h2>
+        </div>
+        <button class="button-add" id="openDialogBtn2">
+            <div id="hoverElement" class="org-bouton" >
+                <img src="add.png">
+                <p>Ajouter une note</p>
+            </div>
+        </button>
+        <div id="hoverElement" class="org-bouton">
+            <a href="#">
+                <img src="search.png">
+                <p> Rechercher</p>
+            </a>
+        </div>
+        <div id="hoverElement" class="org-bouton">
+            <a href="notes.php">
+                <img src="note.png">
+                <p id="option">Notes</p>
+            </a>
+
+        </div>
+        <div id="hoverElement" class="org-bouton">
+            <a class="project" href="#">
+                <img src="project.png">
+                <p id="option"> Catégorie(s)</p>
+                <div>
+                    <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
                 </div>
 
-            </div>
+                <div>
+                    <button type="button" class="prj"><img src="show-prj.png"></button>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function openNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var element = document.getElementById("option");
 
             
-            <script>
-                
-                    function openNav() {
-                    var sidenav = document.getElementById("mySidenav");
-                    var element = document.getElementById("option");
-                    var tab = document.getElementById("wid-tab");
-                    var thd = document.getElementById("thd");
-                    
-                    thd.classList.remove("thead2");
-                    sidenav.style.width = "310px";
-                    sidenav.classList.add("open");
-                    tab.style.width = "850px";
+            sidenav.style.width = "320px";
+            sidenav.classList.add("open");
 
-                    var header = document.getElementById("myHeader");
-                    if (header) {
-                        header.style.display = "block";
-                    }
-                    var header = document.getElementById("open");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("close");
-                    if (header) {
-                        header.style.display = "block";
-                    }
-                    var targetElements = document.querySelectorAll('.org-bouton');
+            var header = document.getElementById("myHeader");
+            if (header) {
+                header.style.display = "block";
+            }
+            var header = document.getElementById("open");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("close");
+            if (header) {
+                header.style.display = "block";
+            }
+            var targetElements = document.querySelectorAll('.org-bouton');
 
-                            targetElements.forEach(hover => {
-                            hover.style.width = "210px";
-                    });
-                }
+            targetElements.forEach(hover => {
+                hover.style.width = "210px";
+            });
+        }
 
-                function closeNav() {
-                    var sidenav = document.getElementById("mySidenav");
-                    var element = document.getElementById("option");
-                    var tab = document.getElementById("wid-tab");
-                    var thd = document.getElementById("thd");
-                    
-                    thd.classList.add("thead2");
-                    sidenav.style.width = "100px";
-                    sidenav.classList.remove("open");
-                    tab.style.width = "1000px";
+        function closeNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var element = document.getElementById("option");
 
-                    document.querySelector(".main").style.marginLeft = "0";
-                    var header = document.getElementById("myHeader");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("close");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("open");
-                    if (header) {
-                        header.style.display = "block";
-                    } 
-                    var targetElements = document.querySelectorAll('.org-bouton');
+            sidenav.style.width = "100px";
+            sidenav.classList.remove("open");
 
-                            targetElements.forEach(hover => {
-                            hover.style.width = "50px";
-                    });
-                }
-            </script>
+            document.querySelector(".main").style.marginLeft = "0";
+            var header = document.getElementById("myHeader");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("close");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("open");
+            if (header) {
+                header.style.display = "block";
+            }
+            var targetElements = document.querySelectorAll('.org-bouton');
+
+            targetElements.forEach(hover => {
+                hover.style.width = "50px";
+            });
+        }
+    </script>
         <div class="contenu" id="main">
             
 
@@ -233,11 +227,11 @@ if (isset($_POST['edit_task'])) {
         
         <?php
             // select all tasks if page is visited or refreshed
-            $tasks = mysqli_query($db, "SELECT * FROM tasks WHERE user_id = $user_id");
+            $tasks = mysqli_query($db, "SELECT * FROM tasks");
 
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
-                    echo '<center><h2 style="font-size:20px" class="titre">Pas encore de tâches enrengistrées.</h2></center> ';
+                    echo '<center><h2 style="font-size:20px" class="titre">Pas encore de tâches enrengistrées.</h2></center>.';
                     ?>
                     <div class="button-container">
                     <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
@@ -250,7 +244,7 @@ if (isset($_POST['edit_task'])) {
         
             <div class="liste-tasks">
                 
-                <div style="width:90%">
+                <div style="width:90%;">
                 <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
                     <div class="liste" id="wid-tab">
                     

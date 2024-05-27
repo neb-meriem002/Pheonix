@@ -115,15 +115,13 @@ if (isset($_POST['edit_note'])) {
     </div>
     <div class="logo2">
         <a href="index.php">Déconnecter</a>
-
-        <a href="#">Editer profil</a>
     </div>
 
 </header>
 <div class="main">
     <div class="barre-cote" id="mySidenav">
-        <button id="open" class="openbtn" onclick="openNav()">Open Sidebar</button>
-        <button id="close" class="closebtn" onclick="closeNav()">Closing</button>
+    <button id="open" class="openbtn" onclick="openNav()"><img class="nav" src="menu.png"></button>
+            <button id="close" class="closebtn" onclick="closeNav()"><img class="nav" src="close.png"></button>
         <?php
         $msg = "Bonjour ". $username . " !";
         ?>
@@ -147,7 +145,7 @@ if (isset($_POST['edit_note'])) {
         <div id="hoverElement" class="org-bouton">
             <a href="add_task.php">
                 <img src="note.png">
-                <p id="option">Taches</p>
+                <p id="option">Tâches</p>
             </a>
 
         </div>
@@ -175,7 +173,7 @@ if (isset($_POST['edit_note'])) {
             var element = document.getElementById("option");
 
             
-            sidenav.style.width = "310px";
+            sidenav.style.width = "320px";
             sidenav.classList.add("open");
 
             var header = document.getElementById("myHeader");
