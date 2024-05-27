@@ -1,0 +1,37 @@
+.sticky-note {
+    display: block;
+    background-color: #fff7e9;
+    padding: 30px; /* Increase padding for more space */
+    margin-bottom: 20px;
+    border-radius: 15px; /* Increase border radius for rounded corners */
+    box-shadow: 3px 3px 5px #a19f9f7b;
+    position: relative;
+    width: calc(100% - 20px); /* Increase width for a wider note */
+    box-sizing: border-box;
+    font-size: 16px; /* Increase font size for larger text */
+}
+
+
+.sticky-note p {
+    margin: 0;
+}
+
+.note{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+.sticky-note-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust as needed */
+}
+.delete-note-button {
+    background-image: url('delete.png'); /* Image URL */
+    background-size: 20px; /* Size of the image */
+    background-position: center; /* Center the image horizontally */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    border: none; /* Remove default button border */
+    padding: 10px 20px; /* Adjust padding to fit the image */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
