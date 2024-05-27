@@ -83,7 +83,7 @@ if (isset($_POST['done_task'])) {
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
         <style>
             body{
-                font-family: 'Work Sans';
+                font-family: 'Arial', sans-serif;;
 
             }
         </style>
@@ -137,8 +137,13 @@ if (isset($_POST['done_task'])) {
                     <a class="project" href="#">
                     <img src="project.png">  
                     <p id="option"> Catégorie(s)</p>
-                    <div><button type="button" class="prj"><img src="add-prj.png"></button></div>
-                    <div><button type="button" class="prj"><img src="show-prj.png"></button></div>
+                    <div>
+                        <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
+                    </div>
+                    
+                    <div>
+                        <button type="button" class="prj"><img src="show-prj.png"></button>
+                    </div>
                     </a>
                 </div>
 
@@ -150,8 +155,14 @@ if (isset($_POST['done_task'])) {
                     function openNav() {
                     var sidenav = document.getElementById("mySidenav");
                     var element = document.getElementById("option");
+                    var tab = document.getElementById("wid-tab");
+                    var thd = document.getElementById("thd");
+                    
+                    thd.classList.remove("thead2");
                     sidenav.style.width = "310px";
                     sidenav.classList.add("open");
+                    tab.style.width = "850px";
+
                     var header = document.getElementById("myHeader");
                     if (header) {
                         header.style.display = "block";
@@ -174,8 +185,14 @@ if (isset($_POST['done_task'])) {
                 function closeNav() {
                     var sidenav = document.getElementById("mySidenav");
                     var element = document.getElementById("option");
+                    var tab = document.getElementById("wid-tab");
+                    var thd = document.getElementById("thd");
+                    
+                    thd.classList.add("thead2");
                     sidenav.style.width = "100px";
                     sidenav.classList.remove("open");
+                    tab.style.width = "1000px";
+
                     document.querySelector(".main").style.marginLeft = "0";
                     var header = document.getElementById("myHeader");
                     if (header) {
@@ -197,9 +214,7 @@ if (isset($_POST['done_task'])) {
                 }
             </script>
         <div class="contenu" id="main">
-            <div>
-                <h2>ToDo List Application PHP and MySQL database</h2>
-            </div>
+            
 
 
         
@@ -220,13 +235,15 @@ if (isset($_POST['done_task'])) {
                 add_button();
         ?>
             <div class="liste-tasks">
-                <div class="liste">
+                <div>
+                <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
+                <div class="liste" id="wid-tab">
                     <table>
-                        <thead>
+                        <thead class="thead2" id="thd">
                             <tr>
                                 <th>N</th>
                                 <th>Tasks</th>
-                                <th style="width: 60px;">Action</th>
+                                <th style="width: 90px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,41 +257,74 @@ if (isset($_POST['done_task'])) {
                             ?>
                                         
                             <tr>
-                                <td><?php echo $i; ?></td>
-                                <td style="<?php echo $task_style; ?>"><?php echo $row['task']; ?></td>
-                                <td>
-                                    <form method="POST" action="add_task.php">
-                                        <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="del_task">
-                                            <img src="delete.png" width="20">
-                                        </button>
-                                        <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
-                                        <button id="btn-tsk" type="submit" name="done_task">
-                                            <img src="<?php echo $image_src; ?>" width="20">
-                                        </button>
-                                    </form>
-                                </td>
-                                </tr>
-                                <?php
-                                    $i++;
-                                    }
-                                ?>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="button-container2">
-                    <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
-                    </div>
-                    <?php
-                    }
-                    ?>
+                            <td><?php echo $i; ?></td>
+                            <td>
+                                <span class="task-text" style="<?php echo $task_style; ?>"><?php echo htmlspecialchars($row['task']); ?></span>
+                                <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
+                            </td>
+                            <td>
+                                <form method="POST" action="add_task.php" class="task-form">
+                                    <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="del_task" title="Delete Task">
+                                        <img src="delete.png" width="20">
+                                    </button>
+
+                                    <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="done_task" title="Mark as Done">
+                                        <img src="<?php echo $image_src; ?>" width="20">
+                                    </button>
+
+                                    <input type="hidden" name="task_id_edit" value="<?php echo $row['id']; ?>">
+                                    <button type="button" class="edit-task-btn" title="Edit Task">
+                                        <img src="edit.png" width="20">
+                                    </button>
+                                    
+                                    <button type="submit" name="edit_task" class="submit-edit-task" style="display: none;" title="Save Changes">
+                                        <img src="edit-done.png" width="20">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php
+                            $i++;
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
+        </div>
+
+        <div class="button-container2">
+            <button class="button-add" id="openDialogBtn">
+                <img src="add.png" width="70">
+            </button>
+        </div>
         <?php
-            } else {
-                echo "Error executing query: " . mysqli_error($db);
-            }
-        ?>
+    }
+} else {
+    echo "Error executing query: " . mysqli_error($db);
+}
+?>
+
+<script>
+    // JavaScript to toggle edit input field
+    document.querySelectorAll('.edit-task-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const taskRow = this.closest('tr');
+            const taskText = taskRow.querySelector('.task-text');
+            const editInput = taskRow.querySelector('.edit-task-input');
+            const saveButton = taskRow.querySelector('.submit-edit-task');
+            const editTaskBtn = taskRow.querySelector('.edit-task-btn');
+
+            // Show edit input field and hide task text
+            editInput.value = taskText.textContent.trim();
+            taskText.style.display = 'none';
+            editInput.style.display = 'block';
+            saveButton.style.display = 'inline-block';
+            editTaskBtn.style.display = 'none';
+        });
+    });
+</script>
                     
 
     </div>
@@ -293,7 +343,9 @@ if (isset($_POST['done_task'])) {
     <div id="dialog" class="dialog-overlay">
         <div class="dialog-box">
             <span class="close-btn" id="closeDialogBtn">&times;</span>
-            <h2>Tâche</h2>
+            <h2>
+                Entrez votre tâche
+            </h2>
             <p><br></p>
             <form method="post" action="add_task.php" class="input_form">
                 <?php if (isset($errors)) { ?>
@@ -301,7 +353,9 @@ if (isset($_POST['done_task'])) {
                 <?php } ?>
                 <div class="input-class">
                     <input type="text" name="task" class="task_input">
-                    <button type="submit" name="submit" id="add_btn" class="add_btn">Add Task</button>
+                    <button type="submit" name="submit" id="add_btn" class="add_btn">
+                        Ajouter
+                    </button>
                 </div>
         </div>
     </div>
@@ -311,29 +365,69 @@ if (isset($_POST['done_task'])) {
     const openDialogBtn = document.getElementById("openDialogBtn");
     const closeDialogBtn = document.getElementById("closeDialogBtn");
     const dialog = document.getElementById("dialog");
+    const thd = document.getElementById("thd");
 
     // Function to open the dialog
     openDialogBtn.addEventListener("click", function() {
         dialog.classList.add("show");
+        thd.classList.remove("thead2");
     });
 
     openDialogBtn2.addEventListener("click", function() {
         dialog.classList.add("show");
+        thd.classList.remove("thead2");
     });
 
     // Function to close the dialog
     closeDialogBtn.addEventListener("click", function() {
         dialog.classList.remove("show");
+        thd.classList.add("thead2");
     });
 
     // Close the dialog when clicking outside of the dialog box
     window.addEventListener("click", function(event) {
         if (event.target === dialog) {
             dialog.classList.remove("show");
+            thd.classList.add("thead2");
         }
     });
 });
 </script>
+<div id="categ" class="dialog-overlay">
+                    <div class="dialog-box">
+                        <span class="close-btn" id="closeDialogBtn2">&times;</span>
+                        <h2>
+                            hello
+                        </h2>
+                        <p><br></p>
+                        <!-- <form method="post" action="add_task.php" class="input_form">
+                            <?php if (isset($errors)) { ?>
+                                <p><?php echo $errors; ?></p>
+                            <?php } ?>
+                            <div class="input-class">
+                                <input type="text" name="task" class="task_input">
+                                <button type="submit" name="submit" id="add_btn" class="add_btn">
+                                    Ajouter
+                                </button>
+                            </div> -->
+                    </div>
+                </div>
+                    <script>
+                         document.addEventListener("DOMContentLoaded", function() {
+                        const ajout_cat = document.getElementById("ajout_cat");
+                        const dialog2 = document.getElementById("categ");
+                        const closeDialogBtn2 = document.getElementById("closeDialogBtn2");
+                        ajout_cat.addEventListener("click", function() {
+                            dialog2.classList.add("show");
+                                });
+
+                            closeDialogBtn2.addEventListener("click", function() {
+                            dialog2.classList.remove("show");
+                                });
+
+                         });
+                        
+                    </script>
 
     <?php
     }
