@@ -117,8 +117,8 @@ if (isset($_POST['edit_task'])) {
         <div class="main">
             
             <div class="barre-cote" id="mySidenav">
-            <button id="open" class="openbtn" onclick="openNav()">Open Sidebar</button>
-            <button id="close" class="closebtn" onclick="closeNav()">Closing</button>
+            <button id="open" class="openbtn" onclick="openNav()"><img class="nav" src="menu.png"></button>
+            <button id="close" class="closebtn" onclick="closeNav()"><img class="nav" src="close.png"></button>
                 <?php
                     $msg = "Bonjour ". $username . " !";
                 ?>
@@ -237,7 +237,7 @@ if (isset($_POST['edit_task'])) {
 
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
-                    echo "The table is empty.";
+                    echo '<center><h2 style="font-size:20px" class="titre">Pas encore de tâches enrengistrées.</h2></center> ';
                     ?>
                     <div class="button-container">
                     <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
