@@ -237,7 +237,7 @@ if (isset($_POST['edit_note'])) {
             die("Connection failed: " . $mysqli->connect_error);
         }
         // Fetch user's notes with dates and categories
-        $sql = "SELECT notes.*, categories.name AS category_name FROM notes LEFT JOIN categories ON notes.category_id = categories.id WHERE notes.user_id = $user_id";
+        $sql = "SELECT notes.*, categories.category_name AS category_name FROM notes LEFT JOIN categories ON notes.category_id = categories.id WHERE notes.user_id = $user_id";
         $result = $db->query($sql);
 
         if ($result->num_rows > 0) {

@@ -110,8 +110,6 @@ if (isset($_POST['edit_task'])) {
             </div>
             <div class="logo2">
                 <a href="index.php">Déconnecter</a>
-
-                <a href="#">Editer profil</a>
             </div>
 
         </header>
@@ -149,7 +147,7 @@ if (isset($_POST['edit_task'])) {
 
         </div>
         <div id="hoverElement" class="org-bouton">
-            <a class="project" href="#">
+            <a class="project" href="category.php">
                 <img src="project.png">
                 <p id="option"> Catégorie(s)</p>
                 <div>

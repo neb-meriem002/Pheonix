@@ -245,7 +245,7 @@ if (isset($_POST['edit_task'])) {
                             <thead class="thead2" id="thd">
                                 <tr>
                                     <th>N</th>
-                                    <th>Tasks</th>
+                                    <th>Categories</th>
                                     <th style="width: 90px;">Action</th>
                                 </tr>
                             </thead>
