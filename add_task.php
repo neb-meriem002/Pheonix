@@ -147,7 +147,7 @@ if (isset($_POST['edit_task'])) {
                 
                 </div>
                 <div id="hoverElement" class="org-bouton"> 
-                    <a class="project" href="category.php">
+                    <a class="project" href="#">
                     <img src="project.png">  
                     <p id="option"> Catégorie(s)</p>
                     <div>
