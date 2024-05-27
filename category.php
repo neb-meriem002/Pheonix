@@ -32,18 +32,16 @@ $errors = "";
 
 // insert a quote if submit button is clicked
 if (isset($_POST['submit'])) {
-    if (empty($_POST['task'])) {
+    if (empty($_POST['name'])) {
         $errors = "You must fill in the task";
     } else {
-        $task = $_POST['task'];
-        $category_id = $_POST['category_id']; // Assuming you have a category_id in your form
-        // Prepare and bind
-        $stmt = $db->prepare("INSERT INTO tasks (task, category_id, user_id) VALUES (?, ?, ?)");
-        $stmt->bind_param("sii", $task, $category_id, $user_id);
+        $task = $_POST['name'];
+        $stmt = $db->prepare("INSERT INTO categories (name, user_id) VALUES ( ?, ?)");
+        $stmt->bind_param("si", $task, $user_id);
         // Execute the statement
         $stmt->execute();
         $stmt->close();
-        header('location: add_task.php');
+        header('location: category.php');
     }
 }
 
@@ -51,24 +49,12 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['del_task'])) {
     $id = $_POST['task_id_delete'];
     // Prepare and bind
-    $stmt = $db->prepare("DELETE FROM tasks WHERE id = ? AND user_id = ?");
+    $stmt = $db->prepare("DELETE FROM categories WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $id, $user_id);
     // Execute the statement
     $stmt->execute();
     $stmt->close();
-    header('location: add_task.php');
-}
-
-// done task
-if (isset($_POST['done_task'])) {
-    $id = $_POST['task_id_done'];
-    // Prepare and bind
-    $stmt = $db->prepare("UPDATE tasks SET etat = IF(etat='Done', 'Not_Done', 'Done') WHERE id = ? AND user_id = ?");
-    $stmt->bind_param("ii", $id, $user_id);
-    // Execute the statement
-    $stmt->execute();
-    $stmt->close();
-    header('location: add_task.php');
+    header('location: category.php');
 }
 
 // edit task
@@ -76,16 +62,14 @@ if (isset($_POST['edit_task'])) {
     $id = $_POST['task_id_edit'];
     $edited_task_name = $_POST['task_edit'];
     // Prepare and bind
-    $stmt = $db->prepare("UPDATE tasks SET task = ? WHERE id = ? AND user_id = ?");
+    $stmt = $db->prepare("UPDATE categories SET name = ? WHERE id = ? AND user_id = ?");
     $stmt->bind_param("sii", $edited_task_name, $id, $user_id);
     // Execute the statement
     $stmt->execute();
     $stmt->close();
-    header('location: add_task.php');
+    header('location: category.php');
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -111,6 +95,7 @@ if (isset($_POST['edit_task'])) {
             <div class="logo2">
                 <a href="index.php">Déconnecter</a>
 
+                <a href="#">Editer profil</a>
             </div>
 
         </header>
@@ -130,7 +115,7 @@ if (isset($_POST['edit_task'])) {
                 <button class="button-add" id="openDialogBtn2">
                     <div id="hoverElement" class="org-bouton">
                             <img src="add.png">
-                            <p>Ajouter une tâche</p>
+                            <p>Ajouter une categorie</p>
                     </div>
                  </button>
                 <div id="hoverElement" class="org-bouton"> 
@@ -147,7 +132,7 @@ if (isset($_POST['edit_task'])) {
                 
                 </div>
                 <div id="hoverElement" class="org-bouton"> 
-                    <a class="project" href="category.php">
+                    <a class="project" href="#">
                     <img src="project.png">  
                     <p id="option"> Catégorie(s)</p>
                     <div>
@@ -233,19 +218,19 @@ if (isset($_POST['edit_task'])) {
         
         <?php
             // select all tasks if page is visited or refreshed
-            $tasks = mysqli_query($db, "SELECT * FROM tasks WHERE user_id = $user_id");
+            $tasks = mysqli_query($db, "SELECT * FROM categories WHERE user_id = $user_id");
 
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
                     echo "The table is empty.";
                     ?>
                     <div class="button-container">
-                    <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle tâche</p></button>
+                    <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle categorie</p></button>
                     </div>
             <?php
-                    add_button();
+                    category_button();
             }   else {
-                add_button();
+                category_button();
         ?>
         
             <div class="liste-tasks">
@@ -266,28 +251,19 @@ if (isset($_POST['edit_task'])) {
                                 <?php
                                 $i = 1;
                                 while ($row = mysqli_fetch_assoc($tasks)) {
-                                    // Check if the task is 'Done' or 'Not_Done'
-                                    $etat = $row['etat'];
-                                    $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
-                                    $image_src = ($etat == 'Done') ? 'done.png' : 'undone.png'; // Determine image based on task status
                                 ?>
                                             
                                 <tr>
                                 <td><?php echo $i; ?></td>
                                 <td>
-                                    <span class="task-text" style="<?php echo $task_style; ?>"><?php echo htmlspecialchars($row['task']); ?></span>
-                                    <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
+                                    <span class="task-text"><?php echo htmlspecialchars($row['note_text']); ?></span>
+                                    <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['note_text']); ?>">
                                 </td>
                                 <td>
                                     <form method="POST" action="add_task.php" class="task-form">
                                         <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="del_task" title="Delete Task">
                                             <img src="delete.png" width="20">
-                                        </button>
-
-                                        <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="done_task" title="Mark as Done">
-                                            <img src="<?php echo $image_src; ?>" width="20">
                                         </button>
 
                                         <input type="hidden" name="task_id_edit" value="<?php echo $row['id']; ?>">
@@ -363,7 +339,7 @@ if (isset($_POST['edit_task'])) {
                 Entrez votre tâche
             </h2>
             <p><br></p>
-            <form method="post" action="add_task.php" class="input_form">
+            <form method="post" action="category.php" class="input_form">
                 <?php if (isset($errors)) { ?>
                     <p><?php echo $errors; ?></p>
                 <?php } ?>
@@ -448,3 +424,51 @@ if (isset($_POST['edit_task'])) {
     <?php
     }
     ?>
+<?php
+function category_button()
+{
+    ?>
+    <button id="showCategoryForm">Add category</button>
+    <div class = category-block>
+        <form method="post" action="add_task.php" class="input_form">
+        <?php if (isset($errors)) { ?>
+            <p><?php echo $errors; ?></p>
+        <?php } ?>
+        <input type="text" name="category_input" class="category_input">
+        <button type="submit" name="category_btn" id="category_btn" class="add_category">Add category</button>
+        </form>
+    </div> <!-- close the task-block div -->
+
+    <!-- JavaScript to show the category form -->
+    <script>
+        document.getElementById('showCategoryForm').addEventListener('click', function() {
+            document.querySelector('.category-block').style.display = 'block'; // Corrected class name
+        });
+    </script>
+<?php
+}
+?>
+
+<?php
+function category_button2()
+{
+    ?>
+    <div class = category-block>
+        <form method="post" action="add_task.php" class="input_form">
+        <?php if (isset($errors)) { ?>
+            <p><?php echo $errors; ?></p>
+        <?php } ?>
+        <input type="text" name="category_input" class="category_input">
+        <button type="submit" name="category_btn" id="category_btn" class="add_category">Add category</button>
+        </form>
+    </div> <!-- close the task-block div -->
+
+    <!-- JavaScript to show the category form -->
+    <script>
+        document.getElementById('showCategoryForm').addEventListener('click', function() {
+            document.querySelector('.category-block').style.display = 'block'; // Corrected class name
+        });
+    </script>
+<?php
+}
+?>
