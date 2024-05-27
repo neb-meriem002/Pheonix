@@ -265,7 +265,7 @@ if (isset($_POST['edit_note'])) {
             }
             echo '</div>'; // Close container div
         } else {
-            echo '<center><h2 style="font-size:20px" class="titre">Pas encore de Notes enrengistrees.</h2></center> ';
+            echo '<center><h2 style="font-size:20px" class="titre">Pas encore de Notes enrengistrées.</h2></center> ';
         }
         ?>
         <!-- Add Note Form -->

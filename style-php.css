@@ -59,7 +59,7 @@ input[type="password"] {
 
 button {
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: rgb(237, 151, 151);
     color: white;
     border: none;
     border-radius: 4px;
@@ -68,17 +68,18 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: rgb(197, 69, 69);
 }
 
 /* Links */
 a {
-    color: #4CAF50;
+    color: rgb(197, 69, 69);
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+    
 }
 
 /* Messages */
