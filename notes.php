@@ -146,11 +146,20 @@ if (isset($_POST['edit_note'])) {
         </div>
         <div id="hoverElement" class="org-bouton">
             <a href="add_task.php">
-                <img src="note.png">
+                <img src="icon.png">
                 <p id="option">Tâches</p>
             </a>
 
         </div>
+        
+        <div id="hoverElement" class="org-bouton">
+            <a href="notes.php">
+                <img src="note.png">
+                <p id="option">Notes</p>
+            </a>
+        
+        </div>
+       
         <div id="hoverElement" class="org-bouton">
             <a class="project" href="#">
                 <img src="project.png">
