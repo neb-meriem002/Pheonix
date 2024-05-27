@@ -129,10 +129,11 @@ if (isset($_POST['edit_task'])) {
             <h2 >Menu</h2>
         </div>
         <button class="button-add" id="openDialogBtn2">
+            <a>
             <div id="hoverElement" class="org-bouton" >
                 <img src="add.png">
-                <p>Ajouter une note</p>
-            </div>
+                <p style="font-size:16px">Ajouter une note</p>
+            </a>
         </button>
         <div id="hoverElement" class="org-bouton">
             <a href="#">

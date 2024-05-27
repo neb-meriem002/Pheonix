@@ -131,9 +131,11 @@ if (isset($_POST['edit_note'])) {
             <h2 >Menu</h2>
         </div>
         <button class="button-add" id="openDialogBtn2">
+            <a>
             <div id="hoverElement" class="org-bouton" >
                 <img src="add.png">
-                <p>Ajouter une note</p>
+                <p style="font-size:16px">Ajouter une note</p>
+            </a>
             </div>
         </button>
         <div id="hoverElement" class="org-bouton">
