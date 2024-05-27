@@ -32,11 +32,12 @@ $errors = "";
 
 // insert a quote if submit button is clicked
 if (isset($_POST['submit'])) {
-    if (empty($_POST['name'])) {
+    if (empty($_POST['task'])) {
         $errors = "You must fill in the task";
     } else {
-        $task = $_POST['name'];
-        $stmt = $db->prepare("INSERT INTO categories (name, user_id) VALUES ( ?, ?)");
+        $task = $_POST['task'];
+        // Prepare and bind
+        $stmt = $db->prepare("INSERT INTO categories (category_name, user_id) VALUES (?, ?)");
         $stmt->bind_param("si", $task, $user_id);
         // Execute the statement
         $stmt->execute();
@@ -62,13 +63,14 @@ if (isset($_POST['edit_task'])) {
     $id = $_POST['task_id_edit'];
     $edited_task_name = $_POST['task_edit'];
     // Prepare and bind
-    $stmt = $db->prepare("UPDATE categories SET name = ? WHERE id = ? AND user_id = ?");
+    $stmt = $db->prepare("UPDATE categories SET category_name = ? WHERE id = ? AND user_id = ?");
     $stmt->bind_param("sii", $edited_task_name, $id, $user_id);
     // Execute the statement
     $stmt->execute();
     $stmt->close();
     header('location: category.php');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -228,9 +230,9 @@ if (isset($_POST['edit_task'])) {
                     <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle categorie</p></button>
                     </div>
             <?php
-                    category_button();
+                    add_button();
             }   else {
-                category_button();
+                add_button();
         ?>
         
             <div class="liste-tasks">
@@ -256,8 +258,8 @@ if (isset($_POST['edit_task'])) {
                                 <tr>
                                 <td><?php echo $i; ?></td>
                                 <td>
-                                    <span class="task-text"><?php echo htmlspecialchars($row['note_text']); ?></span>
-                                    <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['note_text']); ?>">
+                                    <span class="task-text"><?php echo htmlspecialchars($row['category_name']); ?></span>
+                                    <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['category_name']); ?>">
                                 </td>
                                 <td>
                                     <form method="POST" action="add_task.php" class="task-form">
@@ -330,13 +332,11 @@ if (isset($_POST['edit_task'])) {
     {
         ?>
        
-          
-    
     <div id="dialog" class="dialog-overlay">
         <div class="dialog-box">
             <span class="close-btn" id="closeDialogBtn">&times;</span>
             <h2>
-                Entrez votre tâche
+                Entrez votre categorie
             </h2>
             <p><br></p>
             <form method="post" action="category.php" class="input_form">
@@ -424,51 +424,3 @@ if (isset($_POST['edit_task'])) {
     <?php
     }
     ?>
-<?php
-function category_button()
-{
-    ?>
-    <button id="showCategoryForm">Add category</button>
-    <div class = category-block>
-        <form method="post" action="add_task.php" class="input_form">
-        <?php if (isset($errors)) { ?>
-            <p><?php echo $errors; ?></p>
-        <?php } ?>
-        <input type="text" name="category_input" class="category_input">
-        <button type="submit" name="category_btn" id="category_btn" class="add_category">Add category</button>
-        </form>
-    </div> <!-- close the task-block div -->
-
-    <!-- JavaScript to show the category form -->
-    <script>
-        document.getElementById('showCategoryForm').addEventListener('click', function() {
-            document.querySelector('.category-block').style.display = 'block'; // Corrected class name
-        });
-    </script>
-<?php
-}
-?>
-
-<?php
-function category_button2()
-{
-    ?>
-    <div class = category-block>
-        <form method="post" action="add_task.php" class="input_form">
-        <?php if (isset($errors)) { ?>
-            <p><?php echo $errors; ?></p>
-        <?php } ?>
-        <input type="text" name="category_input" class="category_input">
-        <button type="submit" name="category_btn" id="category_btn" class="add_category">Add category</button>
-        </form>
-    </div> <!-- close the task-block div -->
-
-    <!-- JavaScript to show the category form -->
-    <script>
-        document.getElementById('showCategoryForm').addEventListener('click', function() {
-            document.querySelector('.category-block').style.display = 'block'; // Corrected class name
-        });
-    </script>
-<?php
-}
-?>
