@@ -70,6 +70,20 @@ if (isset($_POST['done_task'])) {
     $stmt->close();
     header('location: add_task.php');
 }
+
+// edit task
+if (isset($_POST['edit_task'])) {
+    $id = $_POST['task_id_edit'];
+    $edited_task_name = $_POST['task_edit'];
+    // Prepare and bind
+    $stmt = $db->prepare("UPDATE tasks SET task = ? WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("sii", $edited_task_name, $id, $user_id);
+    // Execute the statement
+    $stmt->execute();
+    $stmt->close();
+    header('location: add_task.php');
+}
+
 ?>
 
 
@@ -234,64 +248,67 @@ if (isset($_POST['done_task'])) {
             }   else {
                 add_button();
         ?>
+        
             <div class="liste-tasks">
-                <div>
+                
+                <div style="width:90%;">
                 <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
-                <div class="liste" id="wid-tab">
-                    <table>
-                        <thead class="thead2" id="thd">
-                            <tr>
-                                <th>N</th>
-                                <th>Tasks</th>
-                                <th style="width: 90px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $i = 1;
-                            while ($row = mysqli_fetch_assoc($tasks)) {
-                                // Check if the task is 'Done' or 'Not_Done'
-                                $etat = $row['etat'];
-                                $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
-                                $image_src = ($etat == 'Done') ? 'done.png' : 'undone.png'; // Determine image based on task status
-                            ?>
+                    <div class="liste" id="wid-tab">
+                    
+                        <table>
+                            <thead class="thead2" id="thd">
+                                <tr>
+                                    <th>N</th>
+                                    <th>Tasks</th>
+                                    <th style="width: 90px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 1;
+                                while ($row = mysqli_fetch_assoc($tasks)) {
+                                    // Check if the task is 'Done' or 'Not_Done'
+                                    $etat = $row['etat'];
+                                    $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : ''; // Apply line-through style to 'Done' tasks
+                                    $image_src = ($etat == 'Done') ? 'done.png' : 'undone.png'; // Determine image based on task status
+                                ?>
+                                            
+                                <tr>
+                                <td><?php echo $i; ?></td>
+                                <td>
+                                    <span class="task-text" style="<?php echo $task_style; ?>"><?php echo htmlspecialchars($row['task']); ?></span>
+                                    <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
+                                </td>
+                                <td>
+                                    <form method="POST" action="add_task.php" class="task-form">
+                                        <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="del_task" title="Delete Task">
+                                            <img src="delete.png" width="20">
+                                        </button>
+
+                                        <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="done_task" title="Mark as Done">
+                                            <img src="<?php echo $image_src; ?>" width="20">
+                                        </button>
+
+                                        <input type="hidden" name="task_id_edit" value="<?php echo $row['id']; ?>">
+                                        <button type="button" class="edit-task-btn" title="Edit Task">
+                                            <img src="edit.png" width="20">
+                                        </button>
                                         
-                            <tr>
-                            <td><?php echo $i; ?></td>
-                            <td>
-                                <span class="task-text" style="<?php echo $task_style; ?>"><?php echo htmlspecialchars($row['task']); ?></span>
-                                <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
-                            </td>
-                            <td>
-                                <form method="POST" action="add_task.php" class="task-form">
-                                    <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="del_task" title="Delete Task">
-                                        <img src="delete.png" width="20">
-                                    </button>
-
-                                    <input type="hidden" name="task_id_done" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" name="done_task" title="Mark as Done">
-                                        <img src="<?php echo $image_src; ?>" width="20">
-                                    </button>
-
-                                    <input type="hidden" name="task_id_edit" value="<?php echo $row['id']; ?>">
-                                    <button type="button" class="edit-task-btn" title="Edit Task">
-                                        <img src="edit.png" width="20">
-                                    </button>
-                                    
-                                    <button type="submit" name="edit_task" class="submit-edit-task" style="display: none;" title="Save Changes">
-                                        <img src="edit-done.png" width="20">
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php
-                            $i++;
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+                                        <button type="submit" name="edit_task" class="submit-edit-task" style="display: none;" title="Save Changes">
+                                            <img src="edit-done.png" width="20">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                        </div>
         </div>
 
         <div class="button-container2">
