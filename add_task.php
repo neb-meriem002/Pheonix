@@ -250,7 +250,7 @@ if (isset($_POST['edit_task'])) {
         
             <div class="liste-tasks">
                 
-                <div style="width:90%;">
+                <div style="width:90%">
                 <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
                     <div class="liste" id="wid-tab">
                     
