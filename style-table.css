@@ -13,9 +13,10 @@
 
 .liste {
     width: 100%;
-    max-height: 95vh;
+    max-height: 72vh;
      /* Set a max height for the scrolling effect */
     overflow-y: auto; /*Enable vertical scrolling */
+    overflow-x: auto;
     margin: 5px 10px 10px 15px;
     font-family: Arial, sans-serif;
      /* Ensures the border-radius is visible */
@@ -33,6 +34,7 @@
   
   .thead2{
     position: sticky;
+    top:0;
   }
   
   thead th {
@@ -40,7 +42,6 @@
     
     background-color: rgb(255, 247, 233);
     text-align: left;
-    /* position: sticky; */
     padding: 10px;
     border-bottom: 2px solid #ddd;
   }

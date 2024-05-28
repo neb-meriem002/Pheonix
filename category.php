@@ -96,123 +96,125 @@ if (isset($_POST['edit_task'])) {
             </div>
             <div class="logo2">
                 <a href="index.php">Déconnecter</a>
-
-                <a href="#">Editer profil</a>
             </div>
 
         </header>
+        
         <div class="main">
+    <div class="barre-cote" id="mySidenav">
+    <button id="open" class="openbtn" onclick="openNav()"><img class="nav" src="menu.png"></button>
+            <button id="close" class="closebtn" onclick="closeNav()"><img class="nav" src="close.png"></button>
+        <?php
+        $msg = "Bonjour ". $username . " !";
+        ?>
+        <div class="info">
+
+            <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
+            <h2 >Menu</h2>
+        </div>
+        <button class="button-add" id="openDialogBtn2">
+            <a>
+            <div id="hoverElement" class="org-bouton" >
+                <img src="add.png">
+                <p style="font-size:16px">Ajouter une note</p>
+            </a>
+        </button>
+        <div id="hoverElement" class="org-bouton">
+            <a href="#">
+                <img src="search.png">
+                <p> Rechercher</p>
+            </a>
+        </div>
+        <div id="hoverElement" class="org-bouton">
+            <a href="add_task.php">
+                <img src="icon.png">
+                <p id="option">Tâches</p>
+            </a>
+
+        </div>
+
+        <div id="hoverElement" class="org-bouton">
+            <a href="notes.php">
+                <img src="note.png">
+                <p id="option">Notes</p>
+            </a>
+        
+        </div>
+        
+
+        <div id="hoverElement" class="org-bouton">
+            <a class="project" href="category.php">
+                <img src="project.png">
+                <p id="option"> Catégorie(s)</p>
+                <div>
+                    <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
+                </div>
+
+                <div>
+                    <button type="button" class="prj"><img src="show-prj.png"></button>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function openNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var element = document.getElementById("option");
+
             
-            <div class="barre-cote" id="mySidenav">
-            <button id="open" class="openbtn" onclick="openNav()">Open Sidebar</button>
-            <button id="close" class="closebtn" onclick="closeNav()">Closing</button>
-                <?php
-                    $msg = "Bonjour ". $username . " !";
-                ?>
-                <div class="info">
-                
-                    <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
-                    <h2 >Menu</h2>
-                </div>
-                <button class="button-add" id="openDialogBtn2">
-                    <div id="hoverElement" class="org-bouton">
-                            <img src="add.png">
-                            <p>Ajouter une categorie</p>
-                    </div>
-                 </button>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a href="#">
-                    <img src="search.png">  
-                    <p> Rechercher</p>
-                </a>
-                </div>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a href="notes.php">
-                        <img src="note.png"> 
-                        <p id="option">Notes</p>
-                    </a>
-                
-                </div>
-                <div id="hoverElement" class="org-bouton"> 
-                    <a class="project" href="#">
-                    <img src="project.png">  
-                    <p id="option"> Catégorie(s)</p>
-                    <div>
-                        <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
-                    </div>
-                    
-                    <div>
-                        <button type="button" class="prj"><img src="show-prj.png"></button>
-                    </div>
-                    </a>
-                </div>
+            sidenav.style.width = "320px";
+            sidenav.classList.add("open");
 
-            </div>
+            var header = document.getElementById("myHeader");
+            if (header) {
+                header.style.display = "block";
+            }
+            var header = document.getElementById("open");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("close");
+            if (header) {
+                header.style.display = "block";
+            }
+            var targetElements = document.querySelectorAll('.org-bouton');
 
-            
-            <script>
-                
-                    function openNav() {
-                    var sidenav = document.getElementById("mySidenav");
-                    var element = document.getElementById("option");
-                    var tab = document.getElementById("wid-tab");
-                    var thd = document.getElementById("thd");
-                    
-                    thd.classList.remove("thead2");
-                    sidenav.style.width = "310px";
-                    sidenav.classList.add("open");
-                    tab.style.width = "850px";
+            targetElements.forEach(hover => {
+                hover.style.width = "210px";
+            });
+        }
 
-                    var header = document.getElementById("myHeader");
-                    if (header) {
-                        header.style.display = "block";
-                    }
-                    var header = document.getElementById("open");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("close");
-                    if (header) {
-                        header.style.display = "block";
-                    }
-                    var targetElements = document.querySelectorAll('.org-bouton');
+        function closeNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var element = document.getElementById("option");
 
-                            targetElements.forEach(hover => {
-                            hover.style.width = "210px";
-                    });
-                }
+            sidenav.style.width = "100px";
+            sidenav.classList.remove("open");
 
-                function closeNav() {
-                    var sidenav = document.getElementById("mySidenav");
-                    var element = document.getElementById("option");
-                    var tab = document.getElementById("wid-tab");
-                    var thd = document.getElementById("thd");
-                    
-                    thd.classList.add("thead2");
-                    sidenav.style.width = "100px";
-                    sidenav.classList.remove("open");
-                    tab.style.width = "1000px";
+            document.querySelector(".main").style.marginLeft = "0";
+            var header = document.getElementById("myHeader");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("close");
+            if (header) {
+                header.style.display = "none";
+            }
+            var header = document.getElementById("open");
+            if (header) {
+                header.style.display = "block";
+            }
+            var targetElements = document.querySelectorAll('.org-bouton');
 
-                    document.querySelector(".main").style.marginLeft = "0";
-                    var header = document.getElementById("myHeader");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("close");
-                    if (header) {
-                        header.style.display = "none";
-                    }
-                    var header = document.getElementById("open");
-                    if (header) {
-                        header.style.display = "block";
-                    } 
-                    var targetElements = document.querySelectorAll('.org-bouton');
-
-                            targetElements.forEach(hover => {
-                            hover.style.width = "50px";
-                    });
-                }
-            </script>
+            targetElements.forEach(hover => {
+                hover.style.width = "50px";
+            });
+        }
+    </script>
         <div class="contenu" id="main">
             
 
@@ -224,7 +226,7 @@ if (isset($_POST['edit_task'])) {
 
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
-                    echo "The table is empty.";
+                    echo '<center><h2 style="font-size:20px" class="titre">Pas encore de catégories enrengistrées.</h2></center>.';
                     ?>
                     <div class="button-container">
                     <button class="button-add" id="openDialogBtn"><img src="add.png" width="70"> <p>Ajouter une nouvelle categorie</p></button>

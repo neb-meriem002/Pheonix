@@ -47,6 +47,22 @@ if (isset($_POST['submit'])) {
     }
 }
 
+// insert a category if submit button is clicked
+if (isset($_POST['category_btn'])) {
+    if (empty($_POST['category_input'])) {
+        $errors = "You must fill in the task";
+    } else {
+        $category = $_POST['category_input'];
+        // Prepare and bind
+        $stmt = $db->prepare("INSERT INTO categories ( name, user_id) VALUES ( ?, ?)");
+        $stmt->bind_param("si", $category, $user_id);
+        // Execute the statement
+        $stmt->execute();
+        $stmt->close();
+        header('location: add_task.php');
+    }
+}
+
 // delete task
 if (isset($_POST['del_task'])) {
     $id = $_POST['task_id_delete'];
@@ -146,7 +162,7 @@ if (isset($_POST['edit_task'])) {
             </a>
 
         </div>
-        
+
         <div id="hoverElement" class="org-bouton">
             <a href="notes.php">
                 <img src="note.png">
@@ -261,7 +277,8 @@ if (isset($_POST['edit_task'])) {
                             <thead class="thead2" id="thd">
                                 <tr>
                                     <th>N</th>
-                                    <th>Tasks</th>
+                                    <th>Tâche</th>
+                                    <th>Categorie</th>
                                     <th style="width: 90px;">Action</th>
                                 </tr>
                             </thead>
@@ -280,6 +297,11 @@ if (isset($_POST['edit_task'])) {
                                 <td>
                                     <span class="task-text" style="<?php echo $task_style; ?>"><?php echo htmlspecialchars($row['task']); ?></span>
                                     <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
+                                </td>
+                                
+                                <td>
+                                    <?php echo htmlspecialchars($row['category_id']); ?> <!-- Display category name -->
+                
                                 </td>
                                 <td>
                                     <form method="POST" action="add_task.php" class="task-form">
@@ -359,25 +381,38 @@ if (isset($_POST['edit_task'])) {
        
           
     
-    <div id="dialog" class="dialog-overlay">
-        <div class="dialog-box">
-            <span class="close-btn" id="closeDialogBtn">&times;</span>
-            <h2>
-                Entrez votre tâche
-            </h2>
-            <p><br></p>
-            <form method="post" action="add_task.php" class="input_form">
-                <?php if (isset($errors)) { ?>
-                    <p><?php echo $errors; ?></p>
-                <?php } ?>
-                <div class="input-class">
-                    <input type="text" name="task" class="task_input">
-                    <button type="submit" name="submit" id="add_btn" class="add_btn">
-                        Ajouter
-                    </button>
-                </div>
-        </div>
+       <div id="dialog" class="dialog-overlay">
+    <div class="dialog-box">
+        <span class="close-btn" id="closeDialogBtn">&times;</span>
+        <h2>Entrez votre tâche</h2>
+        <p><br></p>
+        <form method="post" action="add_task.php" class="input_form">
+            <?php if (isset($errors)) { ?>
+                <p><?php echo $errors; ?></p>
+            <?php } ?>
+            <div class="input-class">
+                <input type="text" name="task" class="task_input" required>
+                <select name="category" class="category_input task_input">
+                    <option value="">Choisir une categorie</option>
+                    <?php
+                    $conn = new mysqli('localhost', 'root', '', 'todo_list');
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+                    $result = $conn->query("SELECT id, category_name FROM categories");
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value='" . $row['id'] . "'>" . $row['category_name'] . "</option>";
+                    }
+                    $conn->close();
+                    ?>
+                </select>
+                <button type="submit" name="submit" id="add_btn" class="add_btn">Ajouter</button>
+            </div>
+        </form>
     </div>
+</div>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
     const openDialogBtn2 = document.getElementById("openDialogBtn2");
@@ -412,41 +447,6 @@ if (isset($_POST['edit_task'])) {
     });
 });
 </script>
-<div id="categ" class="dialog-overlay">
-                    <div class="dialog-box">
-                        <span class="close-btn" id="closeDialogBtn2">&times;</span>
-                        <h2>
-                            hello
-                        </h2>
-                        <p><br></p>
-                        <!-- <form method="post" action="add_task.php" class="input_form">
-                            <?php if (isset($errors)) { ?>
-                                <p><?php echo $errors; ?></p>
-                            <?php } ?>
-                            <div class="input-class">
-                                <input type="text" name="task" class="task_input">
-                                <button type="submit" name="submit" id="add_btn" class="add_btn">
-                                    Ajouter
-                                </button>
-                            </div> -->
-                    </div>
-                </div>
-                    <script>
-                         document.addEventListener("DOMContentLoaded", function() {
-                        const ajout_cat = document.getElementById("ajout_cat");
-                        const dialog2 = document.getElementById("categ");
-                        const closeDialogBtn2 = document.getElementById("closeDialogBtn2");
-                        ajout_cat.addEventListener("click", function() {
-                            dialog2.classList.add("show");
-                                });
-
-                            closeDialogBtn2.addEventListener("click", function() {
-                            dialog2.classList.remove("show");
-                                });
-
-                         });
-                        
-                    </script>
 
     <?php
     }
