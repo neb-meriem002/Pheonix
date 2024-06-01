@@ -116,11 +116,11 @@ if (isset($_POST['edit_task'])) {
             <a>
             <div id="hoverElement" class="org-bouton" >
                 <img src="add.png">
-                <p style="font-size:16px">Ajouter une note</p>
+                <p style="font-size:16px">Ajouter une Catégorie</p>
             </a>
         </button>
         <div id="hoverElement" class="org-bouton">
-            <a href="#">
+            <a href="search_task_.php">
                 <img src="search.png">
                 <p> Rechercher</p>
             </a>
@@ -146,15 +146,14 @@ if (isset($_POST['edit_task'])) {
             <a class="project" href="category.php">
                 <img src="project.png">
                 <p id="option"> Catégorie(s)</p>
-                <div>
-                    <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
-                </div>
+                
 
                 <div>
                     <button type="button" class="prj"><img src="show-prj.png"></button>
                 </div>
             </a>
         </div>
+        
 
     </div>
 

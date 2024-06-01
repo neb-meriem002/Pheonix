@@ -139,7 +139,7 @@ if (isset($_POST['edit_note'])) {
             </div>
         </button>
         <div id="hoverElement" class="org-bouton">
-            <a href="#">
+            <a href="search_task_.php">
                 <img src="search.png">
                 <p> Rechercher</p>
             </a>

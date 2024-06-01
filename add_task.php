@@ -146,11 +146,11 @@ if (isset($_POST['edit_task'])) {
             <a>
             <div id="hoverElement" class="org-bouton" >
                 <img src="add.png">
-                <p style="font-size:16px">Ajouter une note</p>
+                <p style="font-size:16px">Ajouter une tâche</p>
             </a>
         </button>
         <div id="hoverElement" class="org-bouton">
-            <a href="#">
+            <a href="search_task_.php">
                 <img src="search.png">
                 <p> Rechercher</p>
             </a>
@@ -252,7 +252,10 @@ if (isset($_POST['edit_task'])) {
         
         <?php
             // select all tasks if page is visited or refreshed
-            $tasks = mysqli_query($db, "SELECT * FROM tasks");
+            $tasks = mysqli_query($db, "SELECT tasks.*, categories.category_name 
+            FROM tasks 
+            LEFT JOIN categories ON tasks.category_id = categories.id 
+            WHERE tasks.user_id = '$user_id'");
 
             if ($tasks) {
                 if (mysqli_num_rows($tasks) == 0) {
@@ -300,7 +303,7 @@ if (isset($_POST['edit_task'])) {
                                 </td>
                                 
                                 <td>
-                                    <?php echo htmlspecialchars($row['category_id']); ?> <!-- Display category name -->
+                                    <?php echo htmlspecialchars($row['category_name']); ?> <!-- Display category name -->
                 
                                 </td>
                                 <td>
@@ -392,7 +395,7 @@ if (isset($_POST['edit_task'])) {
             <?php } ?>
             <div class="input-class">
                 <input type="text" name="task" class="task_input" required>
-                <select name="category" class="category_input task_input">
+                <select name="category_id" class="category_input task_input" required>
                     <option value="">Choisir une categorie</option>
                     <?php
                     $conn = new mysqli('localhost', 'root', '', 'todo_list');
