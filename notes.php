@@ -161,19 +161,19 @@ if (isset($_POST['edit_note'])) {
         </div>
        
         <div id="hoverElement" class="org-bouton">
-            <a class="project" href="#">
+            <a class="project" href="category.php">
                 <img src="project.png">
                 <p id="option"> Catégorie(s)</p>
-                <div>
+                <!-- <div>
                     <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
                 </div>
 
                 <div>
                     <button type="button" class="prj"><img src="show-prj.png"></button>
-                </div>
+                </div> -->
             </a>
         </div>
-
+        
     </div>
 
 
@@ -234,7 +234,7 @@ if (isset($_POST['edit_note'])) {
         }
     </script>
 <div class="liste-tasks">
-<div style="width:90%;">
+<div style="width:98%;">
     <center><h2 class="titre">Sticky Notes</h2></center>
     <div id="wid-tab" class="note" style="width:100%">
         <?php
@@ -283,11 +283,11 @@ if (isset($_POST['edit_note'])) {
     </div>
 </div>
         </div>
-    <div class="button-container2">
+    <!-- <div class="button-container2">
         <button class="button-add" id="openDialogBtn">
             <img src="add.png" width="70">
         </button>
-    </div>
+    </div> -->
 </div>
    
 

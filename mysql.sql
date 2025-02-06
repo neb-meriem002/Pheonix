@@ -1,6 +1,10 @@
 CREATE DATABASE IF NOT EXISTS todo_list;
 
 USE todo_list;
+-- DROP TABLE users;
+-- DROP TABLE categories;
+-- DROP TABLE tasks;
+-- DROP TABLE notes;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,7 +16,7 @@ CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL,
     user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
@@ -23,7 +27,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS notes (
@@ -33,5 +37,5 @@ CREATE TABLE IF NOT EXISTS notes (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );

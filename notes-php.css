@@ -1,37 +1,82 @@
-.sticky-note {
-    display: block;
-    background-color: #fff7e9;
-    padding: 30px; /* Increase padding for more space */
-    margin-bottom: 20px;
-    border-radius: 15px; /* Increase border radius for rounded corners */
-    box-shadow: 3px 3px 5px #a19f9f7b;
-    position: relative;
-    width: calc(100% - 20px); /* Increase width for a wider note */
-    box-sizing: border-box;
-    font-size: 16px; /* Increase font size for larger text */
-}
-
-
-.sticky-note p {
-    margin: 0;
-}
-
-.note{
-    display: flex;
-    flex-direction: row;
-    gap:10px;
-}
+/* Conteneur général */
 .sticky-note-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Adjust as needed */
+    flex-direction: row;
+    gap: 20px; /* Espacement entre les notes */
+    
+    margin-top: 50px;
 }
-.delete-note-button {
-    background-image: url('delete.png'); /* Image URL */
-    background-size: 20px; /* Size of the image */
-    background-position: center; /* Center the image horizontally */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    border: none; /* Remove default button border */
-    padding: 10px 20px; /* Adjust padding to fit the image */
-    cursor: pointer; /* Show pointer cursor on hover */
+
+/* Sticky Note */
+.sticky-note {
+    gap:5px;
+    width: 250px; /* Largeur des notes */
+    height: 180px; /* Ajuste automatiquement selon le contenu */
+    background-color:rgb(228 228 249);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Ombre pour l'effet 3D */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 15px; /* Espacement interne */
+    position: relative;
+    overflow-wrap: break-word; /* Priorité à la coupure de mot */
+    word-wrap: break-word; /* Permet au texte de passer à la ligne */
+    word-break: break-word; /* Coupure automatique des mots longs */
+    white-space: normal; /* Assure que le texte s'adapte à l'espace disponible */
+    hyphens: auto;
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation lors du survol */
 }
+
+/* Effet au survol */
+.sticky-note:hover {
+    transform: translateY(-5px); /* Légère élévation */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Accentuation de l'ombre */
+}
+
+/* Texte de la note */
+.sticky-note p {
+    width: 85%;
+    justify-content: left;
+    margin: 0 0 15px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    overflow-wrap: break-word; /* Priorité à la coupure de mot */
+    word-break: break-word; /* Coupure automatique des mots longs */
+    white-space: normal; /* Assure que le texte s'adapte à l'espace disponible */
+    hyphens: auto;
+}
+
+/* Bouton de suppression */
+.sticky-note button {
+    position: absolute; /* Positionne le bouton par rapport à la note */
+    top: 10px; /* Distance du haut de la note */
+    right: 15px; /* Distance de la droite de la note */
+    padding-left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    z-index: 10; /* Assure que le bouton est au-dessus du texte */
+}
+
+.sticky-note button:hover {
+    transform: scale(1.1); /* Agrandissement léger */
+}
+
+/* Image du bouton */
+.sticky-note button img {
+    
+    width: 16px;
+    height: 16px;
+}
+
+/* Titre principal */
+.titre {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Conteneur des notes */
+ 

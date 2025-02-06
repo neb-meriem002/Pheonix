@@ -116,19 +116,19 @@ if (isset($_POST['edit_task'])) {
             <a>
             <div id="hoverElement" class="org-bouton" >
                 <img src="add.png">
-                <p style="font-size:16px">Ajouter une Catégorie</p>
+                <p style="font-size:15px" >Ajouter une Catégorie</p>
             </a>
         </button>
         <div id="hoverElement" class="org-bouton">
             <a href="search_task_.php">
                 <img src="search.png">
-                <p> Rechercher</p>
+                <p style="font-size:15px" > Rechercher</p>
             </a>
         </div>
         <div id="hoverElement" class="org-bouton">
             <a href="add_task.php">
                 <img src="icon.png">
-                <p id="option">Tâches</p>
+                <p id="option" style="font-size:15px" >Tâches</p>
             </a>
 
         </div>
@@ -136,7 +136,7 @@ if (isset($_POST['edit_task'])) {
         <div id="hoverElement" class="org-bouton">
             <a href="notes.php">
                 <img src="note.png">
-                <p id="option">Notes</p>
+                <p id="option" style="font-size:15px" >Notes</p>
             </a>
         
         </div>
@@ -145,12 +145,8 @@ if (isset($_POST['edit_task'])) {
         <div id="hoverElement" class="org-bouton">
             <a class="project" href="category.php">
                 <img src="project.png">
-                <p id="option"> Catégorie(s)</p>
+                <p id="option" style="font-size:15px" > Catégorie(s)</p>
                 
-
-                <div>
-                    <button type="button" class="prj"><img src="show-prj.png"></button>
-                </div>
             </a>
         </div>
         
@@ -238,8 +234,8 @@ if (isset($_POST['edit_task'])) {
         
             <div class="liste-tasks">
                 
-                <div style="width:90%;">
-                <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
+                <div style="width:96%;">
+                <center><h2 class="titre">ToDo List : Categories</h2></center>
                     <div class="liste" id="wid-tab">
                     
                         <table>
@@ -263,7 +259,7 @@ if (isset($_POST['edit_task'])) {
                                     <input type="text" name="task_edit" class="edit-task-input" style="display: none;" value="<?php echo htmlspecialchars($row['category_name']); ?>">
                                 </td>
                                 <td>
-                                    <form method="POST" action="add_task.php" class="task-form">
+                                    <form method="POST" action="category.php" class="task-form">
                                         <input type="hidden" name="task_id_delete" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="del_task" title="Delete Task">
                                             <img src="delete.png" width="20">
@@ -289,11 +285,11 @@ if (isset($_POST['edit_task'])) {
                         </div>
         </div>
 
-        <div class="button-container2">
+        <!-- <div class="button-container2">
             <button class="button-add" id="openDialogBtn">
                 <img src="add.png" width="70">
             </button>
-        </div>
+        </div> -->
         <?php
     }
 } else {
@@ -352,40 +348,56 @@ if (isset($_POST['edit_task'])) {
                 </div>
         </div>
     </div>
+
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-    const openDialogBtn2 = document.getElementById("openDialogBtn2");
-    const openDialogBtn = document.getElementById("openDialogBtn");
-    const closeDialogBtn = document.getElementById("closeDialogBtn");
-    const dialog = document.getElementById("dialog");
-    const thd = document.getElementById("thd");
+        const openDialogBtn2 = document.getElementById("openDialogBtn2");
+        const openDialogBtn = document.getElementById("openDialogBtn");
+        const closeDialogBtn = document.getElementById("closeDialogBtn");
+        const dialog = document.getElementById("dialog");
+        const thd = document.getElementById("thd");
 
-    // Function to open the dialog
-    openDialogBtn.addEventListener("click", function() {
-        dialog.classList.add("show");
-        thd.classList.remove("thead2");
-    });
-
-    openDialogBtn2.addEventListener("click", function() {
-        dialog.classList.add("show");
-        thd.classList.remove("thead2");
-    });
-
-    // Function to close the dialog
-    closeDialogBtn.addEventListener("click", function() {
-        dialog.classList.remove("show");
-        thd.classList.add("thead2");
-    });
-
-    // Close the dialog when clicking outside of the dialog box
-    window.addEventListener("click", function(event) {
-        if (event.target === dialog) {
-            dialog.classList.remove("show");
-            thd.classList.add("thead2");
+        // Function to open the dialog safely
+        function openDialog() {
+            if (dialog) {
+                dialog.classList.add("show");
+                if (thd) thd.classList.remove("thead2");
+            }
         }
+
+        // Attach event listeners only if the elements exist
+        if (openDialogBtn) {
+            openDialogBtn.addEventListener("click", openDialog);
+        }
+
+        if (openDialogBtn2) {
+            openDialogBtn2.addEventListener("click", openDialog);
+        }
+
+        // Function to close the dialog
+        if (closeDialogBtn) {
+            closeDialogBtn.addEventListener("click", function() {
+                if (dialog) {
+                    dialog.classList.remove("show");
+                    if (thd) thd.classList.add("thead2");
+                }
+            });
+        }
+
+        // Close the dialog when clicking outside the box
+        window.addEventListener("click", function(event) {
+            if (event.target === dialog) {
+                dialog.classList.remove("show");
+                if (thd) thd.classList.add("thead2");
+            }
+        });
     });
-});
-</script>
+
+    </script>
+
+
 <div id="categ" class="dialog-overlay">
                     <div class="dialog-box">
                         <span class="close-btn" id="closeDialogBtn2">&times;</span>

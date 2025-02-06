@@ -10,6 +10,8 @@ if (!isset($_SESSION['username'])) {
 // Connexion à la base de données (à adapter selon votre configuration)
 $conn = new mysqli('localhost', 'root', '', 'todo_list');
 
+$search = $_POST['search'] ?? '';
+
 // Vérifie la connexion
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -17,32 +19,25 @@ if ($conn->connect_error) {
 
 $username = $_SESSION['username'];
 
-// Obtient l'ID de l'utilisateur
-$stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
+// Requête avec jointure entre tasks et categories
+$sql = "SELECT tasks.*, categories.category_name 
+        FROM tasks 
+        LEFT JOIN categories ON tasks.category_id = categories.id
+        WHERE tasks.task LIKE ?";
+
+$stmt = $conn->prepare($sql);
+$searchTerm = "%$search%";
+$stmt->bind_param("s", $searchTerm);
 $stmt->execute();
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
-$user_id = $user['id'];
 
 $tasks = [];
-
-if (isset($_POST['search'])) {
-    $search = '%' . strtolower($_POST['search']) . '%';
-
-    // Prépare et exécute la requête SQL pour la recherche
-    $stmt = $conn->prepare("SELECT id, task, category_id FROM tasks WHERE user_id = ? AND LOWER(task) LIKE ?");
-    $stmt->bind_param("is", $user_id, $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    while ($row = $result->fetch_assoc()) {
-        $tasks[] = $row;
-    }
-
-    $stmt->close();
-    $conn->close();
+while ($row = $result->fetch_assoc()) {
+    $tasks[] = $row;
 }
+
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -80,13 +75,6 @@ if (isset($_POST['search'])) {
             <h2  class="option" id="myHeader"><?php echo htmlspecialchars($msg); ?></h2>
             <h2 >Menu</h2>
         </div>
-        <button class="button-add" id="openDialogBtn2">
-            <a>
-            <div id="hoverElement" class="org-bouton" >
-                <img src="add.png">
-                <p style="font-size:16px">Ajouter une note</p>
-            </a>
-        </button>
         <div id="hoverElement" class="org-bouton">
             <a href="search_task_.php">
                 <img src="search.png">
@@ -114,13 +102,13 @@ if (isset($_POST['search'])) {
             <a class="project" href="category.php">
                 <img src="project.png">
                 <p id="option"> Catégorie(s)</p>
-                <div>
+                <!-- <div>
                     <button id="ajout_cat" type="button" class="prj"><img src="add-prj.png"></button>
                 </div>
 
                 <div>
                     <button type="button" class="prj"><img src="show-prj.png"></button>
-                </div>
+                </div> -->
             </a>
         </div>
 
@@ -134,7 +122,7 @@ if (isset($_POST['search'])) {
             var element = document.getElementById("option");
 
             
-            sidenav.style.width = "250px";
+            sidenav.style.width = "320px";
             sidenav.classList.add("open");
 
             var header = document.getElementById("myHeader");
@@ -186,28 +174,99 @@ if (isset($_POST['search'])) {
 
 
 
-    <div class="contenu" id="main">
-    <center><h2 class="titre"> Quelque chose à rechercher ?</h2></center>
+<div class="liste-tasks" id="main">
+<div style="width:95%;">
+    <center><h2 class="titre">Quelque chose à rechercher ?</h2></center>
 
-        <!-- Search form again for convenience -->
-        <form action="search_task_.php" method="POST">
-            <center><input type="text" name="search" class="task_input" placeholder="Rechercher"></center>
-            <center><button type="submit" class="search-btn">Chercher</button></center>
-        </form>
+    <!-- Formulaire de recherche -->
+    <form action="search_task_.php" method="POST">
+        <center><input type="text" name="search" class="task_input" placeholder="Rechercher"></center>
+        <center><button type="submit" class="search-btn">Chercher</button></center>
+    </form>
 
-        <center><h2 class="titre">Résultat(s):</h2></center>
-        <ul>
-            <?php if (count($tasks) > 0): ?>
-                <?php foreach ($tasks as $task): ?>
-                    <li><?php echo htmlspecialchars($task['task']) . ' (' . htmlspecialchars($task['category_id']) . ')'; ?></li>
-                <?php endforeach; ?>
+
+
+
+        <?php 
+        // Vérifier si une recherche a été effectuée
+        if (isset($_POST['search']) && !empty($_POST['search'])): 
+        ?>
+
+            <?php if (!empty($tasks)): ?>
+                <center><h3 class="titre">Résultat(s)</h3></center>
+                <div class="liste" id="wid-tab">
+                <table>
+                    <thead class="thead2" id="thd">
+                        <tr>
+                            <th>N°</th>
+                            <th>Tâche</th>
+                            <th style="width: 150px;" >Catégorie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $i = 1;
+                        foreach ($tasks as $row):
+                            $etat = $row['etat'] ?? 'Not_Done'; // Valeur par défaut
+                            $category_name = $row['category_name'] ?? 'Sans catégorie'; // Valeur par défaut
+                            $task_style = ($etat == 'Done') ? 'text-decoration: line-through;' : '';
+                            $image_src = ($etat == 'Done') ? 'done.png' : 'undone.png';
+                        ?>
+                        <tr>
+                            <td><?php echo $i; ?></td>
+                        
+                            <form method="POST" action="search_task_.php" class="task-form">
+                                <input type="hidden" name="task_id_edit" value="<?php echo $row['id']; ?>">
+                        
+                                <!-- Nom de la tâche -->
+                                <td>
+                                    <span class="task-text" style="<?php echo $task_style; ?>">
+                                        <?php echo htmlspecialchars($row['task']); ?>
+                                    </span>
+                                    <input type="text" name="task_edit" class="edit-task-input" 
+                                        style="display: none;" value="<?php echo htmlspecialchars($row['task']); ?>">
+                                </td>
+                        
+                                <td><?php echo htmlspecialchars($category_name); ?></td>
+                        
+                                
+                            </form>
+                        </tr>
+                        <?php
+                            $i++;
+                        endforeach;
+                        
+                        ?>
+                    </tbody>
+                </table>
+                    </div>   
             <?php else: ?>
-                
-                <center><li class="titre">Pas de tâche trouvée.</li></center>
+                <center><h3 class="titre">Résultat(s) :  Pas de tâche trouvée.</h3></center>
             <?php endif; ?>
-        </ul>
-        <p><center><a class="titre back-link" href="add_task.php">Retour aux menu tâches</a></center></p>
+        <?php endif; ?>
+
+        <!-- <p><center><a class="titre back-link" href="add_task.php">Retour au menu tâches</a></center></p> -->
     </div>
+    </div>
+    <script>
+        document.querySelectorAll('.edit-task-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr'); // Find the closest row
+                const taskText = row.querySelector('.task-text');
+                const editInput = row.querySelector('.edit-task-input');
+                const saveButton = row.querySelector('.submit-edit-task');
+                const editTaskBtn = row.querySelector('.edit-task-btn');
+
+                // Show edit input field and hide task text
+                editInput.style.display = 'inline-block';
+                editInput.focus(); // Auto-focus on input
+                taskText.style.display = 'none';
+                saveButton.style.display = 'inline-block';
+                editTaskBtn.style.display = 'none';
+            });
+        });
+    </script>
+
     <style>
         /* General Styles */
 body {
@@ -217,7 +276,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
 
 /* Centered Content */
 .contenu {
@@ -261,12 +319,6 @@ form {
     background: rgb(197, 69, 69);
 }
 
-/* Task List */
-ul {
-    
-    list-style-type: none;
-    padding: 0;
-}
 
 /* Links */
 .back-link {
@@ -284,11 +336,6 @@ ul {
     text-decoration: underline;
 }
 
-/* No Tasks Found */
-ul li.titre {
-    color: #ff0000;
-    font-weight: bold;
-}
 </style>
 </body>
 </html>
