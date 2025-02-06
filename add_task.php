@@ -246,7 +246,10 @@ if (isset($_POST['edit_task'])) {
             });
         }
     </script>
+        <div class="contenu" id="main">
             
+
+
         
         <?php
             // select all tasks if page is visited or refreshed
@@ -268,28 +271,22 @@ if (isset($_POST['edit_task'])) {
                 add_button();
         ?>
         
-            <div class="liste-tasks" id="main">
+            <div class="liste-tasks">
                 
-                <div style="width:95%;">
-                            <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
-                                <div class="liste" id="wid-tab">
-                                
-                                    <table>
-                                        <thead class="thead2" id="thd">
-                                            <tr>
-                                                <th>N</th>
-                                                <th>Tâche</th>
-                                                <th>Categorie</th>
-                                                <th style="width: 90px;">Action</th>
-                                            </tr>
-                                        </thead>
-                
-                                        
-
-
-
-
-                                        <tbody>
+                <div style="width:98%;">
+                <center><h2 class="titre">ToDo List :  Qu'a-t-on à faire ?</h2></center>
+                    <div class="liste" id="wid-tab">
+                    
+                        <table>
+                            <thead class="thead2" id="thd">
+                                <tr>
+                                    <th>N</th>
+                                    <th>Tâche</th>
+                                    <th>Categorie</th>
+                                    <th style="width: 90px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                     <?php
                                     $i = 1;
                                     while ($row = mysqli_fetch_assoc($tasks)) {
@@ -347,15 +344,25 @@ if (isset($_POST['edit_task'])) {
                                     }
                                     ?>
                                 </tbody>
-                            </table>
-            </div>
-        </div> 
-        <?php
-    }
-} else {
-    echo "Error executing query: " . mysqli_error($db);
-}
-?>
+
+
+
+
+
+
+
+
+
+
+                        </table>
+                    </div>
+                </div> 
+                <?php
+                }
+                } else {
+                echo "Error executing query: " . mysqli_error($db);
+                }
+                ?>
 
 <script>
 document.querySelectorAll('.edit-task-btn').forEach(button => {
@@ -387,43 +394,43 @@ document.querySelectorAll('.edit-task-btn').forEach(button => {
 </html>
 
 <?php
-    function add_button()
-    {
-        ?>
-       
-          
-    
-       <div id="dialog" class="dialog-overlay">
-    <div class="dialog-box">
-        <span class="close-btn" id="closeDialogBtn">&times;</span>
-        <h2>Entrez votre tâche</h2>
-        <p><br></p>
-        <form method="post" action="add_task.php" class="input_form">
-            <?php if (isset($errors)) { ?>
-                <p><?php echo $errors; ?></p>
-            <?php } ?>
-            <div class="input-class">
-                <input type="text" name="task" class="task_input" required>
-                <select name="category_id" class="category_input task_input" required>
-                    <option value="">Choisir une categorie</option>
-                    <?php
-                    $conn = new mysqli('localhost', 'root', '', 'todo_list');
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-                    $result = $conn->query("SELECT id, category_name FROM categories");
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['id'] . "'>" . $row['category_name'] . "</option>";
-                    }
-                    $conn->close();
-                    ?>
-                </select>
-                <button type="submit" name="submit" id="add_btn" class="add_btn">Ajouter</button>
-            </div>
-        </form>
+function add_button()
+{
+    global $user_id; // Assurez-vous que $user_id est accessible dans cette fonction
+    ?>
+    <div id="dialog" class="dialog-overlay">
+        <div class="dialog-box">
+            <span class="close-btn" id="closeDialogBtn">&times;</span>
+            <h2>Entrez votre tâche</h2>
+            <p><br></p>
+            <form method="post" action="add_task.php" class="input_form">
+                <?php if (isset($errors)) { ?>
+                    <p><?php echo $errors; ?></p>
+                <?php } ?>
+                <div class="input-class">
+                    <input type="text" name="task" class="task_input" required>
+                    <select name="category_id" class="category_input task_input" required>
+                        <option value="">Choisir une categorie</option>
+                        <?php
+                        $conn = new mysqli('localhost', 'root', '', 'todo_list');
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+                        $result = $conn->query("SELECT id, category_name FROM categories WHERE user_id = '$user_id'");
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value='" . $row['id'] . "'>" . $row['category_name'] . "</option>";
+                        }
+                        $conn->close();
+                        ?>
+                    </select>
+                    <button type="submit" name="submit" id="add_btn" class="add_btn">Ajouter</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
+    <?php
+}
+?>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -470,7 +477,3 @@ document.querySelectorAll('.edit-task-btn').forEach(button => {
     });
 
     </script>
-
-    <?php
-    }
-    ?>

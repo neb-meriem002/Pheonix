@@ -255,10 +255,10 @@ if (isset($_POST['edit_note'])) {
             while($row = $result->fetch_assoc()) {
                 // Styling for the sticky note
                 echo '<div class="sticky-note">';
+                // Date
+                echo '<p>Date: <strong><span style="text-decoration: underline;">' . htmlspecialchars($row["date_creation"]) . '</span></strong></p>';
                 // Note content
                 echo '<p style="margin-bottom:20px;">' . $row["note_text"] . '</p>';
-                // Date
-                echo '<p>Date: ' . $row["date_creation"] . '</p>';
                 // Category
                 // echo '<p>Category: ' . $row["category_name"] . '</p>';
                 // Delete note form

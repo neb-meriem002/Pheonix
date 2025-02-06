@@ -8,24 +8,33 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Connexion à la base de données (à adapter selon votre configuration)
-$conn = new mysqli('localhost', 'root', '', 'todo_list');
+$db = new mysqli('localhost', 'root', '', 'todo_list');
 
 $search = $_POST['search'] ?? '';
 
 // Vérifie la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
 }
 
 $username = $_SESSION['username'];
 
+// Obtient l'ID de l'utilisateur
+$stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$user_id = $user['id'];
+
+
 // Requête avec jointure entre tasks et categories
 $sql = "SELECT tasks.*, categories.category_name 
-        FROM tasks 
+        FROM tasks  
         LEFT JOIN categories ON tasks.category_id = categories.id
-        WHERE tasks.task LIKE ?";
+        WHERE tasks.task LIKE ? AND tasks.user_id = '$user_id' ";
 
-$stmt = $conn->prepare($sql);
+$stmt = $db->prepare($sql);
 $searchTerm = "%$search%";
 $stmt->bind_param("s", $searchTerm);
 $stmt->execute();
@@ -37,7 +46,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
-$conn->close();
+$db->close();
 ?>
 
 <!DOCTYPE html>
